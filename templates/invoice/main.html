@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+{% load invoice_extras %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid rgb(141, 141, 141);
+        border-collapse: collapse;
+        padding: 5px;
+        min-width: 10px;
+      }
+      .weight {
+        font-weight: bold;
+        font-size: small;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="15">YOUR COMPANY</th>
+        <th></th>
+        <th colspan="10" rowspan="5">B2B TAX INVOICE</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="7">DATE</th>
+        <th cowspan="6">{{ today }}</th>
+      </tr>
+      <tr>
+        <td colspan="4" rowspan="3" align="center">
+          <img
+            src="/home/sheetiguy/B2B/b2b-invoice-backend/liverpool.svg"
+            alt=""
+            height="70px"
+            width="70px"
+          />
+        </td>
+        <td colspan="15" rowspan="2">
+          {{ invoice.seller.address }}, {{ invoice.seller.state }} - {{
+          invoice.seller.pincode }}
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="7" class="weight">B2B TAX INVOICE NO.</td>
+        <td colspan="6">{{ invoice.invoice_number }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="7" class="weight">PO/ORDER ID</td>
+        <td colspan="6">{{ po }}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="weight">GSTIN</td>
+        <td colspan="5">{{ invoice.seller.gstin }}</td>
+        <td colspan="2" class="weight">DL:</td>
+        <td colspan="5">KA-B62-204636/37/38/39</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        {% if appointment_date %}
+        <td rowspan="2" colspan="13" class="weight">
+          APPOINTMENT DATE: {{ appointment_date }}
+        </td>
+        {% else %}
+        <td rowspan="2" colspan="13"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="7">+91 7827206500</td>
+        <td colspan="8">https://bongdevlpy.wordpress.com/</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="5" class="weight">Bill to party:</td>
+        <td colspan="20">{{ invoice.bill_to_party.name }}</td>
+        <td colspan="4" class="weight">Ship to Party</td>
+        <td colspan="22">{{ invoice.ship_to_party.name }}</td>
+      </tr>
+      <!-- <tr>
+            <td colspan="25"></td>
+            <td colspan="26"></td>
+        </tr> -->
+      <tr>
+        <td colspan="14">{{ invoice.bill_to_party.address }}</td>
+        <td colspan="3" class="weight">PINCODE:</td>
+        <td colspan="3">{{ invoice.bill_to_party.pincode }}</td>
+        <td colspan="3" class="weight">CODE:</td>
+        <td colspan="2">{{ invoice.bill_to_party.state_code }}</td>
+        <td colspan="14">{{ invoice.ship_to_party.address }}</td>
+        <td colspan="3" class="weight">PINCODE:</td>
+        <td colspan="3">{{ invoice.ship_to_party.pincode }}</td>
+        <td colspan="4" class="weight">CODE:</td>
+        <td colspan="2">{{ invoice.ship_to_party.state_code }}</td>
+      </tr>
+      <tr>
+        <td colspan="3" class="weight">GSTIN</td>
+        <td colspan="11">{{ invoice.bill_to_party.gstin }}</td>
+        <td colspan="3" class="weight">DL</td>
+        <td colspan="8">{{ invoice.bill_to_party.dl }}</td>
+        <td colspan="3" class="weight">GSTIN</td>
+        <td colspan="11">{{ invoice.ship_to_party.gstin }}</td>
+        <td colspan="3" class="weight">DL</td>
+        <td colspan="9">{{ invoice.ship_to_party.dl }}</td>
+      </tr>
+      <tr>
+        <td colspan="3" class="weight">CONTACT</td>
+        <td colspan="8">{{ invoice.bill_to_party.phone }}</td>
+        <td colspan="14"></td>
+        <td colspan="3" class="weight">CONTACT</td>
+        <td colspan="8">{{ invoice.ship_to_party.phone }}</td>
+        <td colspan="6" class="weight">PLACE OF SUPPLY</td>
+        <td colspan="9">{{ invoice.place_of_supply }}</td>
+      </tr>
+      <!-- DYNAMIC DATA -->
+      <tr style="background-color: #f0f0f0; font-weight: bold">
+        <td>#</td>
+        <td colspan="16">ITEM</td>
+        <td colspan="2">BOX</td>
+        <td colspan="4">BATCH</td>
+        <td colspan="2">QTY</td>
+        <td colspan="2">EXP</td>
+        <td colspan="3">MRP</td>
+        <td colspan="3">RATE</td>
+        <td colspan="3">DISC%</td>
+        <td colspan="2">GST%</td>
+        <td colspan="4">HSN/SAC</td>
+        {% if igst %}
+        <td colspan="6" align="center">IGST</td>
+        {% else %}
+        <td colspan="6">CGST&ensp;&emsp;SGST</td>
+        {% endif %}
+        <td colspan="3">TOTAL</td>
+      </tr>
+      {% for product in products %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td colspan="16">{{ product.product.product_name }}</td>
+        <td colspan="2">{{ product.box_no }}</td>
+        <td colspan="4">{{ product.batch }}</td>
+        <td colspan="2">{{ product.box_qty }}</td>
+        <td colspan="2">{{ product.expiry|date_string }}</td>
+        <td colspan="3">{{ product.mrp }}</td>
+        <td colspan="3">{{ product.rate }}</td>
+        <td colspan="3">{{ product.discount_percent }}%</td>
+        <td colspan="2">{{ product.gst_percent }}%</td>
+        <td colspan="4">{{ product.hsn_code }}</td>
+        <td colspan="3">{{ product|get_tax }}</td>
+        <td colspan="3">{{ product.sgst }}</td>
+        <td colspan="3">{{ product.taxable_amount }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="5" class="weight">{{ invoice.marketplace }}</td>
+        <td colspan="4" class="weight">{{ invoice.mode_of_payment }}</td>
+        <td colspan="3" class="weight">BOXES</td>
+        <td colspan="3">{{ last_box }}</td>
+        <td colspan="6"></td>
+        <td colspan="9"></td>
+        <td colspan="12" rowspan="4"></td>
+        <td colspan="5" class="weight">SUB TOTAL</td>
+        <td colspan="4">{{ sub_total }}</td>
+      </tr>
+      <tr>
+        <td colspan="30"></td>
+        <td colspan="5" class="weight">DISCOUNT TOTAL</td>
+        <td colspan="4">{{ discount_total }}</td>
+      </tr>
+      <tr>
+        <td colspan="30"></td>
+        <td colspan="5" class="weight">TAX TOTAL</td>
+        <td colspan="4">{{ tax_total }}</td>
+      </tr>
+      <tr style="background-color: #f0f0f0">
+        <td colspan="5" class="weight">Amount in words</td>
+        <td colspan="25">Rupees {{ net_amount_str }} Only</td>
+        <td colspan="5" class="weight">NET AMOUNT</td>
+        <td colspan="4">{{ net_amount }}</td>
+      </tr>
+      <tr>
+        <td rowspan="2" colspan="30" class="weight">
+          Terms and condition<br />1. Goods once sold will not be taken back or
+          exchanged.<br />2. We are not responsible for any transit damage, loss
+          or leakage.<br />3. Please make payment within 7 days from the date of
+          invoice.<br />4. 24% p.a. interest will be charged for delayed
+          payment.<br />5. Payment through cheque is subject to realisation.<br />6.
+          Subject to Bangaluru jurisdiction only.
+        </td>
+        <td colspan="9" rowspan="2">
+          <a href="https://bongdevlpy.wordpress.com/"
+            >https://bongdevlpy.wordpress.com/</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td colspan="12" class="weight">For YOUR COMPANY</td>
+      </tr>
+    </table>
+  </body>
+</html>

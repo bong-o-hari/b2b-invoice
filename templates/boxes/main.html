@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 15px;
+      }
+    </style>
+    <title>Box Label</title>
+  </head>
+  <body>
+    <div style="width: 2480px; height: 2088px">
+      <table style="width: 384px">
+        <tr>
+          <td colspan="2" style="text-align: center">
+            <a href="https://bongdevlpy.wordpress.com/"
+              >https://bongdevlpy.wordpress.com/</a
+            >
+          </td>
+          <td style="width: 50px">
+            <img
+              src="/home/sheetiguy/B2B/b2b-invoice-backend/liverpool.svg"
+              alt=""
+              height="50px"
+              width="50px"
+            />
+          </td>
+        </tr>
+        <tr style="font-weight: bold">
+          <td colspan="2">To</td>
+          <td rowspan="2">{{ product.box_no }}</td>
+        </tr>
+        <tr style="font-weight: bold">
+          <td>Invoice#</td>
+          <td>{{ product.invoice_number }}</td>
+        </tr>
+        <tr style="font-weight: bold">
+          <td>Name:</td>
+          <td colspan="2">{{ product.party_name }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">Address:</td>
+          <td colspan="2">{{ product.party_address }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">Contact</td>
+          <td colspan="2">{{ product.party_phone }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">FROM</td>
+          <td colspan="2">Your Address</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold" colspan="3">BOX PACK LIST:</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <div>
+              {% for content in product.box_contents %} {{ content }}<br />
+              {% endfor %}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right; font-weight: bold">
+            {{ date }}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
