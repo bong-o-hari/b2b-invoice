@@ -8,7 +8,6 @@ from party.utils import get_party_by_id
 from .choices import *
 from products.utils import get_product_from_id
 from party.utils import get_party_by_id
-from .constants import invoice_number_starter_point
 
 
 def get_invoice_by_id(invoice_id):
@@ -52,7 +51,7 @@ def get_invoice_number_from_type(curr_invoice):
         seq = value_list[0]
         seq_num = str(last_invoice.invoice_sequence + 1).zfill(5)
     else:
-        seq_num = str(invoice_number_starter_point[curr_invoice.invoice_type]).zfill(5)
+        seq_num = "00000"
         seq = curr_invoice.invoice_type
 
     year = curr_invoice.invoice_date.year
